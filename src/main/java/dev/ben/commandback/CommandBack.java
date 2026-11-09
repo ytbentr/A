@@ -125,7 +125,7 @@ public final class CommandBack implements ModInitializer {
             String gameMode
     ) {
         dispatcher.register(literal(alias)
-                .requires(source -> source.hasPermissionLevel(2))
+                .requires(CommandManager.requirePermissionLevel(CommandManager.GAMEMASTERS_CHECK))
                 .executes(context -> runVanilla(
                         context.getSource(), "gamemode " + gameMode))
                 .then(argument("targets", StringArgumentType.greedyString())
