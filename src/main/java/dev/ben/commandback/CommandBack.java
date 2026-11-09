@@ -40,7 +40,7 @@ public final class CommandBack implements ModInitializer {
 
             // Legacy weather toggle command.
             dispatcher.register(literal("toggledownfall")
-                    .requires(source -> source.hasPermissionLevel(2))
+                    .requires(source -> CommandManager.requirePermissionLevel(CommandManager.GAMEMASTERS_CHECK))
                     .executes(context -> {
                         ServerCommandSource source = context.getSource();
                         String weatherCommand = source.getWorld().isRaining()
@@ -137,6 +137,7 @@ public final class CommandBack implements ModInitializer {
 
     private static int runVanilla(ServerCommandSource source, String command)
             throws com.mojang.brigadier.exceptions.CommandSyntaxException {
-        return source.getServer().getCommandManager().executeWithPrefix(source, command);
+        source.getServer().getCommandManager().parseAndExecute(source, command);
+        return 1;
     }
 }
