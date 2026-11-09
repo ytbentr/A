@@ -40,7 +40,7 @@ public final class CommandBack implements ModInitializer {
 
             // Legacy weather toggle command.
             dispatcher.register(literal("toggledownfall")
-                    .requires(source -> CommandManager.requirePermissionLevel(CommandManager.GAMEMASTERS_CHECK))
+                    .requires(CommandManager.requirePermissionLevel(CommandManager.GAMEMASTERS_CHECK))
                     .executes(context -> {
                         ServerCommandSource source = context.getSource();
                         String weatherCommand = source.getWorld().isRaining()
@@ -61,7 +61,7 @@ public final class CommandBack implements ModInitializer {
         if (!registeredRoot.equals("gamemode")
                 && !registeredRoot.equals("defaultgamemode")
                 && !registeredRoot.equals("difficulty")) {
-            root.requires(source -> source.hasPermissionLevel(2));
+            root.requires(CommandManager.requirePermissionLevel(CommandManager.GAMEMASTERS_CHECK));
         }
 
         for (int i = 0; i < names.length; i++) {
@@ -90,7 +90,7 @@ public final class CommandBack implements ModInitializer {
         };
 
         LiteralArgumentBuilder<ServerCommandSource> gm = literal("gm")
-                .requires(source -> source.hasPermissionLevel(2));
+                .requires(CommandManager.requirePermissionLevel(CommandManager.GAMEMASTERS_CHECK));
 
         for (String[] alias : aliases) {
             gm.then(literal(alias[0])
