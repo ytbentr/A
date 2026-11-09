@@ -30,6 +30,10 @@ public final class CommandBack implements ModInitializer {
             // Short game-mode command: /gm 0..3 and /gm s|c|a|sp.
             registerNumberedCommand(dispatcher, "gm", "gamemode", GAME_MODES);
             registerNamedGameModeAliases(dispatcher);
+            registerFixedGameModeAlias(dispatcher, "gms", "survival");
+            registerFixedGameModeAlias(dispatcher, "gmc", "creative");
+            registerFixedGameModeAlias(dispatcher, "gma", "adventure");
+            registerFixedGameModeAlias(dispatcher, "gmsp", "spectator");
 
             // Short default-game-mode command: /dgm 0..3.
             registerNumberedCommand(dispatcher, "dgm", "defaultgamemode", GAME_MODES);
@@ -113,6 +117,22 @@ public final class CommandBack implements ModInitializer {
                                             + StringArgumentType.getString(context, "targets")))));
         }
         dispatcher.register(gameMode);
+    }
+
+    private static void registerFixedGameModeAlias(
+            CommandDispatcher<ServerCommandSource> dispatcher,
+            String alias,
+            String gameMode
+    ) {
+        dispatcher.register(literal(alias)
+                .requires(source -> source.hasPermissionLevel(2))
+                .executes(context -> runVanilla(
+                        context.getSource(), "gamemode " + gameMode))
+                .then(argument("targets", StringArgumentType.greedyString())
+                        .executes(context -> runVanilla(
+                                context.getSource(),
+                                "gamemode " + gameMode + " "
+                                        + StringArgumentType.getString(context, "targets")))));
     }
 
     private static int runVanilla(ServerCommandSource source, String command)
